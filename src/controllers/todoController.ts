@@ -21,7 +21,7 @@ export const createTodo = async (req: Request, res: Response) => {
 export const updateTodo = async (req: Request, res: Response) => {
     const { id } = req.params;
     const { title, completed } = req.body;
-    const todo = await Todo.findByPk(id);
+    const todo = await Todo.findOne({where: { id: id, userId: Number(req.user?.id)}});
 
     if (!todo) {
         res.status(404).json({ message: "Todo not found" });
@@ -36,7 +36,7 @@ export const updateTodo = async (req: Request, res: Response) => {
 
 export const deleteTodo = async (req: Request, res: Response) => {
     const { id } = req.params;
-    const todo = await Todo.findByPk(id);
+    const todo = await Todo.findOne({where: { id: id, userId: Number(req.user?.id)}});
 
     if (!todo) {
         res.status(404).json({ message: "Todo not found" });
